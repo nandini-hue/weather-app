@@ -8,8 +8,7 @@ async function getWeather() {
         return;
     }
 
-    const apiKey = "fc6006928a234f5dbd2155908251609";
-    const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`;
+    const apiUrl = `/api/weather?location=${encodeURIComponent(location)}`;
 
     try {
         const response = await fetch(apiUrl);
@@ -20,7 +19,7 @@ async function getWeather() {
             weatherResult.classList.add("hidden");
         } else {
             const cityName = data.location.name;
-            const temperature = data.current.temp_c;  // Temperature in Celsius
+            const temperature = data.current.temp_c;
             const condition = data.current.condition.text;
 
             document.getElementById("cityName").innerText = cityName;
@@ -31,8 +30,8 @@ async function getWeather() {
             weatherResult.classList.remove("hidden");
         }
     } catch (error) {
+        console.error("Fetch error:", error);
         errorMessage.classList.remove("hidden");
         weatherResult.classList.add("hidden");
-        console.error("Error fetching weather data:", error);
     }
 }
